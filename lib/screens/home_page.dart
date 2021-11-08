@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it_done_app/screens/settings_page.dart';
 import '../models/items_data.dart';
 import '../widgets/item_card.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,19 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(),
+                ),
+              );
+            },
+          ),
+        ],
         title: const Text('Get it Done'),
       ),
       body: Column(
@@ -45,17 +59,17 @@ class HomePage extends StatelessWidget {
                       builder: (context, itemData, child) => Align(
                         alignment: Alignment.topCenter,
                         child: ListView.builder(
-                          itemCount:
-                              Provider.of<ItemData>(context).items.length,
+                          shrinkWrap: true,
+                          reverse: true,
+                          itemCount: itemData.items.length,
                           itemBuilder: (context, index) => ItemCard(
                             title: itemData.items[index].title,
                             isDone: itemData.items[index].isDone,
                             toggleStatus: (_) {
                               itemData.toggleStatus(index);
                             },
-                            deleteItem: () {
-                              Provider.of<ItemData>(context, listen: false)
-                                  .deleteItem(index);
+                            deleteItem: (_) {
+                              itemData.deleteItem(index);
                             },
                           ),
                         ),
@@ -66,16 +80,20 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              context: context,
-              builder: (context) => ItemAdder());
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: buildFloatingActionButton(context),
+    );
+  }
+
+  FloatingActionButton buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        showModalBottomSheet(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            context: context,
+            builder: (context) => ItemAdder());
+      },
+      child: Icon(Icons.add),
     );
   }
 }

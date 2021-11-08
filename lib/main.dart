@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get_it_done_app/models/color_theme_data.dart';
 import 'package:get_it_done_app/models/items_data.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home_page.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider<ItemData>(
-      create: (BuildContext context) => ItemData(), child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<ItemData>(
+        create: (BuildContext context) => ItemData()),
+    ChangeNotifierProvider<ColorThemeData>(
+        create: (BuildContext context) => ColorThemeData()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,16 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          primaryColor: Colors.green,
-          primarySwatch: Colors.green,
-          scaffoldBackgroundColor: Colors.green,
-          // accentColor: Colors.green,
-          appBarTheme: const AppBarTheme(color: Colors.green),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: const TextTheme(
-              subtitle1: TextStyle(color: Colors.white),
-              headline3: TextStyle(color: Colors.white))),
+      theme: Provider.of<ColorThemeData>(context).selectedThemeData,
       home: const HomePage(),
     );
   }
