@@ -5,7 +5,11 @@ import 'package:provider/provider.dart';
 
 import 'screens/home_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ColorThemeData().createPrefObject();
+  await ItemData().createPrefObject();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ItemData>(
         create: (BuildContext context) => ItemData()),
@@ -20,6 +24,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Provider.of<ColorThemeData>(context).loadThemeToSharedPref();
+    Provider.of<ItemData>(context).loadItemsFromSharedPref();
     return MaterialApp(
       theme: Provider.of<ColorThemeData>(context).selectedThemeData,
       home: const HomePage(),

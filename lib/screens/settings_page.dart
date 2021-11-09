@@ -14,20 +14,14 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class SwitchCard extends StatefulWidget {
-  @override
-  _SwitchCardState createState() => _SwitchCardState();
-}
-
-class _SwitchCardState extends State<SwitchCard> {
-  bool _value = true;
+class SwitchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Text greenText =
         Text('Yeşil', style: TextStyle(color: Theme.of(context).primaryColor));
     Text redText = Text('Kırmızı',
         style: TextStyle(color: Theme.of(context).primaryColor));
-
+    bool _value = Provider.of<ColorThemeData>(context).isGreen;
     return Card(
       child: SwitchListTile(
         subtitle: _value ? greenText : redText,
@@ -37,9 +31,6 @@ class _SwitchCardState extends State<SwitchCard> {
         ),
         value: _value,
         onChanged: (bool value) {
-          setState(() {
-            _value = value;
-          });
           Provider.of<ColorThemeData>(context, listen: false)
               .switchTheme(value);
         },

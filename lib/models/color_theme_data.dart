@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ColorThemeData with ChangeNotifier {
   final ThemeData greenTheme = ThemeData(
@@ -33,10 +34,28 @@ class ColorThemeData with ChangeNotifier {
       textTheme: const TextTheme(
           subtitle1: TextStyle(color: Colors.white),
           headline3: TextStyle(color: Colors.white)));
+  bool _isGreen = true;
+  static SharedPreferences _sharedPref = SharedPreferences as SharedPreferences;
+
   void switchTheme(bool selected) {
     _selectedThemeData = selected ? greenTheme : redTheme;
+    _isGreen = selected;
+    sameThemeToSharedPref(selected);
     notifyListeners();
   }
 
-  ThemeData get selectedThemeData => _selectedThemeData;
+  bool get isGreen => _isGreen;
+  ThemeData get selectedThemeData => _isGreen ? greenTheme : redTheme;
+
+  Future<void> createPrefObject() async {
+    _sharedPref = await SharedPreferences.getInstance();
+  }
+
+  void sameThemeToSharedPref(bool value) {
+    _sharedPref.setBool('themeData', value);
+  }
+
+  void loadThemeToSharedPref() {
+    _isGreen = _sharedPref.getBool('themeData') ?? true;
+  }
 }
