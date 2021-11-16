@@ -51,7 +51,7 @@ class ItemData with ChangeNotifier {
 
   void loadItemsFromSharedPref() {
     List<String>? tempList = _sharedPref.getStringList('toDoData') ?? [];
-    for (var item in tempList!) {
+    for (var item in tempList) {
       _items.add(Item.fromMap(jsonDecode(item)));
     }
   }
