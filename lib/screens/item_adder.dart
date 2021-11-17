@@ -29,13 +29,14 @@ class ItemAdder extends StatelessWidget {
                   hintText: '...'),
               autofocus: true,
             ),
-            FlatButton(
+            TextButton(
                 onPressed: () {
                   Provider.of<ItemData>(context, listen: false)
                       .addItem(textController.text);
                   Navigator.pop(context);
                 },
-                color: Theme.of(context).accentColor,
+                style: TextButton.styleFrom(primary: Colors.blueAccent),
+                // color: Theme.of(context).accentColor,
                 child: const Text('ADD'))
           ],
         ),
