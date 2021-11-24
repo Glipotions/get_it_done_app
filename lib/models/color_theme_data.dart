@@ -40,7 +40,7 @@ class ColorThemeData with ChangeNotifier {
   void switchTheme(bool selected) {
     _selectedThemeData = selected ? greenTheme : redTheme;
     _isGreen = selected;
-    sameThemeToSharedPref(selected);
+    saveThemeToSharedPref(selected);
     notifyListeners();
   }
 
@@ -51,7 +51,7 @@ class ColorThemeData with ChangeNotifier {
     _sharedPref = await SharedPreferences.getInstance();
   }
 
-  void sameThemeToSharedPref(bool value) {
+  void saveThemeToSharedPref(bool value) {
     _sharedPref.setBool('themeData', value);
   }
 
